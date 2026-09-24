@@ -21,7 +21,7 @@ export default function Navbar({ cartCount = 0 }) {
   ]
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'glass shadow-lg' : 'bg-anavu-cream/90 backdrop-blur-md'} border-b border-anavu-yellow/30`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-[#FFF8E3]/95 backdrop-blur-md shadow-xs'} border-b border-anavu-yellow/30`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-3 group">
