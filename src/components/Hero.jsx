@@ -11,7 +11,7 @@ export default function Hero() {
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left animate-fade-in-up">
             <div className="inline-flex items-center gap-2 bg-anavu-yellow/30 border border-anavu-yellow text-anavu-green font-extrabold text-xs px-4 py-2 rounded-full shadow-sm">
               <i className="fa-solid fa-lemon text-anavu-brown"></i>
-              <span>El toque tropical en cada mordida</span>
+              <span>El sabor que despierta tus sentidos &bull; Naturaleza en cada bocado ♡</span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl text-anavu-green leading-[1.1]" style={{ fontFamily: 'Shrikhand, cursive' }}>

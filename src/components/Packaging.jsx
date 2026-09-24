@@ -4,52 +4,55 @@ const packagingLevels = [
   {
     id: 'primario',
     level: 'Empaque Primario',
-    name: 'Doypack Trilaminado con Zipper',
-    desc: 'Bolsa pouch de alta barrera contra la humedad y oxígeno. Mantiene la crocancia intacta de las galletas y conserva el aroma cítrico del maracuyá gracias a su zipper resellable.',
-    capacity: '60g Netos (6 galletas)',
-    material: 'Laminado Foil + BOPP Mate Grado Alimenticio',
+    name: 'Envoltura Flowpack Hermética',
+    desc: 'Empaque individual horizontal trilaminado termosellado en ambos extremos. Diseñado en amarillo tropical con ondas verdes, protege las galletas contra la humedad y el oxígeno, conservando el aroma intenso y la textura crujiente de la avena y semillas de maracuyá.',
+    capacity: '60g Netos (Galletas crocantes)',
+    material: 'Polipropileno Biorientado (BOPP) termosellable grado alimenticio',
+    slogan: 'El sabor que despierta tus sentidos',
     features: [
-      'Cierre zipper hermético reutilizable',
-      'Protección UV y barrera de aroma',
-      'Apertura fácil "easy open" con muescas laterales',
-      'Troquel euro-slot para exhibición colgada',
+      'Sellado hermético "flowpack" de alta barrera contra la humedad',
+      'Ilustración con fruta natural y galletas con semillas de maracuyá',
+      'Muesca lateral de apertura fácil (easy-open)',
+      'Rotulado nutricional completo con 0g grasas trans',
     ],
-    img: '/images/product-pouch.jpg',
+    img: '/images/flowpack-pouch.png',
     badge: 'Consumo Individual',
-    badgeColor: 'bg-anavu-green text-anavu-cream',
+    badgeColor: 'bg-anavu-yellow text-anavu-green border border-anavu-green',
   },
   {
     id: 'secundario',
     level: 'Empaque Secundario',
-    name: 'Caja Display Punto de Venta',
-    desc: 'Caja expositora de cartón microondulado con troquel prepicado que se transforma en expositor de mostrador en segundos. Diseñada para maximizar rotación en bodegas y minimarkets.',
-    capacity: '8 Paquetes Primarios (48 galletas)',
-    material: 'Cartulina Sulfatada 350g con barniz UV brillante',
+    name: 'Caja de Cartón Corrugado Anávu',
+    desc: 'Caja de cartón kraft corrugado con diseño ecológico de ondas y hojas en tinta verde al agua. Protege 24 unidades flowpack para transporte y distribución en bodegas, tiendas y pedidos familiares.',
+    capacity: '24 Paquetes Flowpack (1440g netos)',
+    material: 'Cartón corrugado kraft biodegradable Flauta B',
+    slogan: 'Galletas de maracuyá y avena',
     features: [
-      'Troquel prepicado fácil de armar en mostrador',
-      'Gráfica llamativa 360° con Maracuyita',
-      'Código de barras EAN-13 para facturación rápida',
-      'Optimizado para estanterías de retail peruano',
+      'Diseño botánico sostenible en tinta verde ecológica',
+      'Iconografía de redes sociales y cuidado del medio ambiente',
+      'Estructura resistente a impactos para manipulación y estantería',
+      'Material 100% reciclable y reutilizable',
     ],
-    img: '/images/display-box.jpg',
-    badge: 'Punto de Venta / Retail',
-    badgeColor: 'bg-anavu-yellow text-anavu-green border border-anavu-green',
+    img: '/images/kraft-box.png',
+    badge: 'Transporte y Empaque',
+    badgeColor: 'bg-anavu-green text-anavu-cream',
   },
   {
     id: 'terciario',
-    level: 'Empaque Terciario',
-    name: 'Caja Logística Corrugada B2B',
-    desc: 'Embalaje de cartón corrugado de alta resistencia kraft para transporte y distribución masiva. Cumple con normativas logísticas peruanas e internacionales para paletizado seguro.',
-    capacity: '12 Cajas Display (96 paquetes / 576 galletas)',
-    material: 'Cartón Corrugado Flauta B Doble Onda 150 lb/in²',
+    level: 'Empaque Terciario / Logística',
+    name: 'Paletizado Logístico en Parihuela',
+    desc: 'Estiba estandarizada en bloque sobre parihuela (pallet) de madera tratada. Organiza y asegura 36 cajas corrugadas con film stretch de alta resistencia para distribución mayorista, fletes interprovinciales y logística B2B.',
+    capacity: '36 Cajas Corrugadas (864 paquetes de galletas)',
+    material: 'Parihuela / Pallet de madera normalizada con film extensible',
+    slogan: 'Logística y Distribución a Gran Escala',
     features: [
-      'Iconografía internacional de estiba y manipulación de alimentos',
-      'Etiqueta de trazabilidad y lote de producción impreso',
-      'Resistencia al apilado en almacén de hasta 6 niveles',
-      'Diseño ecológico 100% reciclable y biodegradable',
+      'Configuración en bloque estable para transporte seguro en camión',
+      'Resistencia al apilado en centros de distribución y almacenes',
+      'Cumple normativas logísticas peruanas de embalaje y transporte',
+      'Optimizado para carga y descarga con montacargas',
     ],
-    img: '/images/logistics-box.jpg',
-    badge: 'Distribución Mayorista B2B',
+    img: '/images/pallet-logistics.png',
+    badge: 'Logística Mayorista B2B',
     badgeColor: 'bg-anavu-brown text-anavu-cream',
   },
 ]
@@ -67,14 +70,14 @@ export default function Packaging() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16 animate-fade-in-up">
-          <span className="bg-anavu-yellow/30 text-anavu-brown font-extrabold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest border border-anavu-yellow">
+          <span className="bg-anavu-yellow/30 text-anavu-brown font-extrabold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest border border-anavu-yellow inline-block">
             Ingeniería de Empaque & Logística
           </span>
           <h2 className="text-3xl sm:text-5xl text-anavu-green" style={{ fontFamily: 'Shrikhand, cursive' }}>
             Packaging Oficial Anávu
           </h2>
           <p className="text-sm sm:text-base text-anavu-darkgreen/80">
-            Diseñado meticulosamente según la guía técnica de packaging: desde la preservación de la frescura en mano del consumidor hasta la cadena de suministro B2B.
+            Conoce los 3 niveles de empaque diseñados para el producto: desde el paquete individual que llega a tus manos hasta la estiba paletizada para distribución nacional.
           </p>
         </div>
 
@@ -103,14 +106,13 @@ export default function Packaging() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Visual Box */}
             <div className="lg:col-span-6 relative flex justify-center">
-              <div className="w-full max-w-md h-80 sm:h-96 rounded-2xl overflow-hidden border-2 border-anavu-yellow/40 shadow-xl relative group">
+              <div className="w-full max-w-md h-80 sm:h-96 rounded-2xl overflow-hidden border-2 border-anavu-yellow/40 shadow-xl relative group bg-white flex items-center justify-center p-4">
                 <img
                   src={current.img}
                   alt={current.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-md"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-anavu-green/50 via-transparent to-transparent"></div>
                 <span className={`absolute top-4 left-4 ${current.badgeColor} text-xs font-bold px-3 py-1.5 rounded-full shadow`}>
                   {current.badge}
                 </span>
@@ -157,7 +159,7 @@ export default function Packaging() {
                 <ul className="space-y-2 text-xs text-anavu-darkgreen/85">
                   {current.features.map((feat, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span className="w-5 h-5 rounded-full bg-anavu-yellow/30 text-anavu-green flex items-center justify-center shrink-0 mt-0.5 text-[10px]">
+                      <span className="w-5 h-5 rounded-full bg-anavu-yellow/30 text-anavu-green flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">
                         ✓
                       </span>
                       <span>{feat}</span>

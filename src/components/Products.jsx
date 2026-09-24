@@ -58,11 +58,11 @@ export default function Products({ onAddToCart }) {
               className={`bg-white rounded-3xl border-2 border-anavu-yellow/50 p-4 sm:p-5 flex flex-col justify-between shadow-md card-hover animate-fade-in-up stagger-${(i % 4) + 1}`}
             >
               <div className="space-y-3">
-                <div className="w-full h-48 rounded-2xl border border-anavu-yellow/30 overflow-hidden relative group">
+                <div className="w-full h-48 rounded-2xl border border-anavu-yellow/30 overflow-hidden relative group bg-gradient-to-b from-white via-anavu-cream/30 to-anavu-cream/60 flex items-center justify-center p-3">
                   <img
                     src={p.img}
                     alt={p.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105 drop-shadow-sm"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
