@@ -4,55 +4,87 @@ const packagingLevels = [
   {
     id: 'primario',
     level: 'Empaque Primario',
-    name: 'Envoltura Flowpack Hermética',
-    desc: 'Empaque individual horizontal trilaminado termosellado en ambos extremos. Diseñado en amarillo tropical con ondas verdes, protege las galletas contra la humedad y el oxígeno, conservando el aroma intenso y la textura crujiente de la avena y semillas de maracuyá.',
-    capacity: '60g Netos (Galletas crocantes)',
-    material: 'Polipropileno Biorientado (BOPP) termosellable grado alimenticio',
-    slogan: 'El sabor que despierta tus sentidos',
-    features: [
-      'Sellado hermético "flowpack" de alta barrera contra la humedad',
-      'Ilustración con fruta natural y galletas con semillas de maracuyá',
-      'Muesca lateral de apertura fácil (easy-open)',
-      'Rotulado nutricional completo con 0g grasas trans',
+    name: 'Bolsa Plástica Laminada (Flowpack)',
+    desc: 'Empaque primario individual para galletas de avena con maracuyá. Fabricado en bolsa plástica laminada para alimentos con sellado térmico hermético en ambos extremos. Protege el producto contra la humedad y el oxígeno, conservando la textura crocante y el sabor natural.',
+    capacity: '6 unidades (60 g horneado / 100 g mezcla)',
+    dimensions: '6 cm (ancho) × 18 cm (largo)',
+    material: 'Bolsa plástica para alimentos / BOPP o material laminado',
+    cierre: 'Sellado térmico hermético',
+    cost: 'S/ 1.11 por paquete (6 galletas)',
+    costBreakdown: [
+      { item: 'Avena', amount: '22.5 g', cost: 'S/ 0.18' },
+      { item: 'Maracuyá', amount: '24.0 g', cost: 'S/ 0.12' },
+      { item: 'Harina / Ingr. base', amount: '20.0 g', cost: 'S/ 0.08' },
+      { item: 'Huevo', amount: '1/4 unidad (~12.5 g)', cost: 'S/ 0.12' },
+      { item: 'Azúcar / endulzante', amount: '16.0 g', cost: 'S/ 0.08' },
+      { item: 'Aceite / mantequilla', amount: '5.0 g', cost: 'S/ 0.08' },
+      { item: 'Proteína en polvo', amount: '2.5 g', cost: 'S/ 0.25' },
+      { item: 'Gas / energía / horneado', amount: 'Servicio operativo', cost: 'S/ 0.08' },
+      { item: 'Mano de obra', amount: 'Costo operativo', cost: 'S/ 0.12' },
     ],
-    img: '/images/flowpack-pouch.png',
-    badge: 'Consumo Individual',
+    features: [
+      'Medidas exactas: 6 × 18 cm con sellado térmico de grado alimenticio',
+      'Contenido neto: 6 unidades crujientes (60 g horneado)',
+      'Diseño: Marca Anávu, sabor maracuyá y avena, octógonos y contenido neto',
+      'Lemas oficiales: "El sabor que despierta tus sentidos" & "Crujientes y llenas de sabor natural"',
+      'Costo unitario de receta: S/ 1.11 por paquete',
+    ],
+    img: '/images/flowpack-pouch.jpg',
+    badge: 'Consumo Individual (6 Galletas)',
     badgeColor: 'bg-anavu-yellow text-anavu-green border border-anavu-green',
   },
   {
     id: 'secundario',
     level: 'Empaque Secundario',
-    name: 'Caja de Cartón Corrugado Anávu',
-    desc: 'Caja de cartón kraft corrugado con diseño ecológico de ondas y hojas en tinta verde al agua. Protege 24 unidades flowpack para transporte y distribución en bodegas, tiendas y pedidos familiares.',
-    capacity: '24 Paquetes Flowpack (1440g netos)',
-    material: 'Cartón corrugado kraft biodegradable Flauta B',
-    slogan: 'Galletas de maracuyá y avena',
-    features: [
-      'Diseño botánico sostenible en tinta verde ecológica',
-      'Iconografía de redes sociales y cuidado del medio ambiente',
-      'Estructura resistente a impactos para manipulación y estantería',
-      'Material 100% reciclable y reutilizable',
+    name: 'Bolsa Plástica Laminada para Alimentos',
+    desc: 'Empaque secundario que agrupa 8 empaques primarios organizados en 2 filas × 2 columnas × 2 niveles. Protege los paquetes individuales, mantiene la frescura durante el almacenaje y permite la comercialización en pack multipack.',
+    capacity: '8 empaques primarios (48 galletas en total)',
+    dimensions: '38 cm (ancho) × 14 cm (alto) × 3 cm (fondo)',
+    material: 'Bolsa plástica laminar (BOPP-PE o material apto para alimentos)',
+    cierre: 'Sellado térmico',
+    cost: 'S/ 10.80 por empaque secundario (8 × S/ 1.35)',
+    costBreakdown: [
+      { item: '8 Empaques primarios (S/ 1.35 c/u)', amount: '8 paquetes', cost: 'S/ 10.80' },
+      { item: 'Distribución interior', amount: '2 filas × 2 col × 2 niveles', cost: 'Optimizado' },
+      { item: 'Costo Total del empaque secundario', amount: '8 unidades', cost: 'S/ 10.80' },
     ],
-    img: '/images/kraft-box.png',
-    badge: 'Transporte y Empaque',
+    features: [
+      'Medidas oficiales: 38 cm de ancho × 14 cm de alto × 3 cm de fondo',
+      'Contenido: 8 empaques primarios (48 galletas en total)',
+      'Distribución: 2 filas × 2 columnas × 2 niveles',
+      'Material: Bolsa plástica laminar BOPP-PE apta para alimentos con sellado térmico',
+      'Costo unitario: S/ 1.35 | Costo Total: S/ 10.80',
+    ],
+    img: '/images/kraft-box.jpg',
+    badge: 'Pack x 8 Unidades (S/ 10.80)',
     badgeColor: 'bg-anavu-green text-anavu-cream',
   },
   {
     id: 'terciario',
-    level: 'Empaque Terciario / Logística',
-    name: 'Paletizado Logístico en Parihuela',
-    desc: 'Estiba estandarizada en bloque sobre parihuela (pallet) de madera tratada. Organiza y asegura 36 cajas corrugadas con film stretch de alta resistencia para distribución mayorista, fletes interprovinciales y logística B2B.',
-    capacity: '36 Cajas Corrugadas (864 paquetes de galletas)',
-    material: 'Parihuela / Pallet de madera normalizada con film extensible',
-    slogan: 'Logística y Distribución a Gran Escala',
-    features: [
-      'Configuración en bloque estable para transporte seguro en camión',
-      'Resistencia al apilado en centros de distribución y almacenes',
-      'Cumple normativas logísticas peruanas de embalaje y transporte',
-      'Optimizado para carga y descarga con montacargas',
+    level: 'Empaque Terciario',
+    name: 'Caja de Distribución y Transporte',
+    desc: 'Caja de cartón corrugado de alta resistencia destinada al almacenamiento, transporte y distribución mayorista del producto. Diseñada para proteger las galletas durante fletes y logística interprovincial.',
+    capacity: '12 empaques secundarios = 96 primarios = 576 galletas',
+    dimensions: '42 cm (largo) × 28 cm (ancho) × 28 cm (alto)',
+    material: 'Cartón corrugado de alta resistencia 100% reciclable',
+    cierre: 'Cinta de seguridad para mayor protección',
+    cost: 'S/ 149.60 por caja de transporte',
+    costBreakdown: [
+      { item: '12 empaques secundarios (12 × S/ 11.80)', amount: '12 packs (96 primarios)', cost: 'S/ 141.60' },
+      { item: 'Caja de cartón corrugado', amount: '1 caja alta resistencia', cost: 'S/ 6.00' },
+      { item: 'Separadores y protección interna', amount: 'Set de separadores', cost: 'S/ 1.50' },
+      { item: 'Etiqueta / cinta de seguridad', amount: 'Insumo de sellado', cost: 'S/ 0.50' },
+      { item: 'Costo Total de la caja terciaria', amount: '576 galletas', cost: 'S/ 149.60' },
     ],
-    img: '/images/pallet-logistics.png',
-    badge: 'Logística Mayorista B2B',
+    features: [
+      'Medidas oficiales: 42 cm (largo) × 28 cm (ancho) × 28 cm (alto)',
+      'Contenido total: 12 empaques secundarios (96 empaques primarios = 576 galletas)',
+      'Distribución interna: 2 columnas × 2 filas × 3 niveles (2 × 2 × 3 = 12)',
+      'Peso neto estimado por caja: aprox. 2.592 kg',
+      'Estructura de costo total: S/ 149.60 (con caja, separadores y precinto)',
+    ],
+    img: '/images/pallet-logistics.jpg',
+    badge: '576 Galletas (Costo S/ 149.60)',
     badgeColor: 'bg-anavu-brown text-anavu-cream',
   },
 ]
@@ -71,13 +103,13 @@ export default function Packaging() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16 animate-fade-in-up">
           <span className="bg-anavu-yellow/30 text-anavu-brown font-extrabold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest border border-anavu-yellow inline-block">
-            Ingeniería de Empaque & Logística
+            Ingeniería de Empaques Oficial
           </span>
           <h2 className="text-3xl sm:text-5xl text-anavu-green" style={{ fontFamily: 'Shrikhand, cursive' }}>
-            Packaging Oficial Anávu
+            Empaque Primario, Secundario & Terciario
           </h2>
           <p className="text-sm sm:text-base text-anavu-darkgreen/80">
-            Conoce los 3 niveles de empaque diseñados para el producto: desde el paquete individual que llega a tus manos hasta la estiba paletizada para distribución nacional.
+            Ficha técnica oficial: dimensiones, capacidades, materiales y desglose de costos de fabricación y transporte de Anávu.
           </p>
         </div>
 
@@ -103,10 +135,10 @@ export default function Packaging() {
 
         {/* Tab Showcase Card */}
         <div className="glass rounded-3xl border-2 border-anavu-yellow/60 p-6 sm:p-10 shadow-2xl animate-fade-in-up">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {/* Visual Box */}
-            <div className="lg:col-span-6 relative flex justify-center">
-              <div className="w-full max-w-md h-80 sm:h-96 rounded-2xl overflow-hidden border-2 border-anavu-yellow/40 shadow-xl relative group bg-white flex items-center justify-center p-4">
+            <div className="lg:col-span-5 relative flex flex-col items-center">
+              <div className="w-full h-72 sm:h-80 rounded-2xl overflow-hidden border-2 border-anavu-yellow/40 shadow-xl relative group bg-white flex items-center justify-center p-3">
                 <img
                   src={current.img}
                   alt={current.name}
@@ -116,67 +148,87 @@ export default function Packaging() {
                 <span className={`absolute top-4 left-4 ${current.badgeColor} text-xs font-bold px-3 py-1.5 rounded-full shadow`}>
                   {current.badge}
                 </span>
-                <div className="absolute bottom-4 left-4 right-4 glass-dark rounded-xl p-3 text-white text-xs">
-                  <p className="font-bold text-anavu-yellow flex items-center gap-2">
-                    <i className="fa-solid fa-box-open"></i> {current.name}
-                  </p>
-                  <p className="text-white/80 text-[11px] mt-0.5">{current.capacity}</p>
-                </div>
+              </div>
+
+              {/* Price / Cost Tag Box */}
+              <div className="w-full mt-4 p-4 rounded-2xl bg-anavu-yellow/20 border-2 border-anavu-yellow text-center">
+                <span className="text-[10px] text-anavu-brown font-extrabold uppercase tracking-wider block">Costo Oficial Ficha Técnica</span>
+                <span className="text-2xl font-bold text-anavu-green" style={{ fontFamily: 'Shrikhand, cursive' }}>
+                  {current.cost}
+                </span>
               </div>
             </div>
 
-            {/* Technical Information */}
-            <div className="lg:col-span-6 space-y-6">
+            {/* Technical Information & Costs Table */}
+            <div className="lg:col-span-7 space-y-6">
               <div>
                 <span className="text-xs font-extrabold text-anavu-brown uppercase tracking-widest block">
                   {current.level}
                 </span>
-                <h3 className="text-2xl sm:text-4xl text-anavu-green mt-1" style={{ fontFamily: 'Shrikhand, cursive' }}>
+                <h3 className="text-2xl sm:text-3xl text-anavu-green mt-1" style={{ fontFamily: 'Shrikhand, cursive' }}>
                   {current.name}
                 </h3>
-                <p className="text-xs sm:text-sm text-anavu-darkgreen/80 mt-3 leading-relaxed">
+                <p className="text-xs sm:text-sm text-anavu-darkgreen/80 mt-2 leading-relaxed">
                   {current.desc}
                 </p>
               </div>
 
               {/* Specs Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white/80 border border-anavu-yellow/40 p-3.5 rounded-2xl">
-                  <span className="text-[10px] text-anavu-brown font-extrabold uppercase tracking-wider block">Capacidad / Contenido</span>
-                  <p className="text-xs sm:text-sm font-bold text-anavu-green mt-0.5">{current.capacity}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="bg-white/90 border border-anavu-yellow/40 p-3 rounded-xl shadow-2xs">
+                  <span className="text-[10px] text-anavu-brown font-extrabold uppercase tracking-wider block">Dimensiones Exactas</span>
+                  <p className="text-xs font-bold text-anavu-green mt-0.5">{current.dimensions}</p>
                 </div>
-                <div className="bg-white/80 border border-anavu-yellow/40 p-3.5 rounded-2xl">
+                <div className="bg-white/90 border border-anavu-yellow/40 p-3 rounded-xl shadow-2xs">
+                  <span className="text-[10px] text-anavu-brown font-extrabold uppercase tracking-wider block">Capacidad / Contenido</span>
+                  <p className="text-xs font-bold text-anavu-green mt-0.5">{current.capacity}</p>
+                </div>
+                <div className="bg-white/90 border border-anavu-yellow/40 p-3 rounded-xl shadow-2xs">
                   <span className="text-[10px] text-anavu-brown font-extrabold uppercase tracking-wider block">Material & Sustrato</span>
-                  <p className="text-xs sm:text-sm font-bold text-anavu-green mt-0.5">{current.material}</p>
+                  <p className="text-xs font-bold text-anavu-green mt-0.5">{current.material}</p>
+                </div>
+                <div className="bg-white/90 border border-anavu-yellow/40 p-3 rounded-xl shadow-2xs">
+                  <span className="text-[10px] text-anavu-brown font-extrabold uppercase tracking-wider block">Tipo de Cierre</span>
+                  <p className="text-xs font-bold text-anavu-green mt-0.5">{current.cierre}</p>
+                </div>
+              </div>
+
+              {/* Cost Breakdown Table */}
+              <div className="bg-white rounded-2xl border-2 border-anavu-yellow/40 overflow-hidden shadow-xs">
+                <div className="bg-anavu-green text-anavu-cream px-4 py-2 flex items-center justify-between text-xs font-bold">
+                  <span>Desglose de Costos de la Ficha</span>
+                  <span className="text-anavu-yellow">{current.cost}</span>
+                </div>
+                <div className="max-h-48 overflow-y-auto">
+                  <table className="w-full text-xs">
+                    <tbody>
+                      {current.costBreakdown.map((row, idx) => (
+                        <tr key={idx} className="border-b border-slate-100 hover:bg-anavu-yellow/10">
+                          <td className="px-4 py-1.5 font-bold text-anavu-green">{row.item}</td>
+                          <td className="px-4 py-1.5 text-center text-slate-500">{row.amount}</td>
+                          <td className="px-4 py-1.5 text-right font-bold text-anavu-brown">{row.cost}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
               {/* Key Features List */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <h4 className="text-xs font-extrabold text-anavu-green uppercase tracking-wider">
                   Especificaciones Técnicas:
                 </h4>
-                <ul className="space-y-2 text-xs text-anavu-darkgreen/85">
+                <ul className="space-y-1 text-xs text-anavu-darkgreen/85">
                   {current.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <span className="w-5 h-5 rounded-full bg-anavu-yellow/30 text-anavu-green flex items-center justify-center shrink-0 mt-0.5 text-[10px] font-bold">
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="w-4 h-4 rounded-full bg-anavu-yellow/40 text-anavu-green flex items-center justify-center shrink-0 mt-0.5 text-[9px] font-bold">
                         ✓
                       </span>
                       <span>{feat}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
-
-              {/* Action Link */}
-              <div className="pt-2">
-                <a
-                  href="#pedidos"
-                  className="inline-flex items-center gap-2 bg-anavu-green text-anavu-cream text-xs font-bold px-6 py-3 rounded-xl hover:bg-anavu-brown transition-all shadow hover:scale-105"
-                >
-                  <i className="fa-solid fa-cart-shopping text-anavu-yellow"></i>
-                  <span>Cotizar este formato para tu negocio</span>
-                </a>
               </div>
             </div>
           </div>
