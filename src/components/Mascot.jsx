@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 const tips = [
   "¡Hola! Soy Maracuyita 🌺 ¡Sabías que nuestras galletas tienen pulpa real de maracuyá maduro seleccionado a mano!",
@@ -20,10 +20,30 @@ const stickers = [
 export default function Mascot() {
   const [tipIndex, setTipIndex] = useState(0)
   const [collected, setCollected] = useState([])
+  const [isTalking, setIsTalking] = useState(false)
+  const talkTimerRef = useRef(null)
+
+  const triggerTalking = (durationMs = 3500) => {
+    setIsTalking(true)
+    if (talkTimerRef.current) {
+      clearTimeout(talkTimerRef.current)
+    }
+    talkTimerRef.current = setTimeout(() => {
+      setIsTalking(false)
+    }, durationMs)
+  }
 
   const nextTip = () => {
-    setTipIndex((tipIndex + 1) % tips.length)
+    setTipIndex((prev) => (prev + 1) % tips.length)
+    triggerTalking(3500)
   }
+
+  useEffect(() => {
+    triggerTalking(3000)
+    return () => {
+      if (talkTimerRef.current) clearTimeout(talkTimerRef.current)
+    }
+  }, [])
 
   const collectSticker = (label) => {
     if (!collected.includes(label)) {
@@ -40,19 +60,44 @@ export default function Mascot() {
           {/* Mascot */}
           <div className="lg:col-span-5 flex flex-col items-center text-center space-y-6 animate-fade-in-up">
             {/* Speech Bubble */}
-            <div className="glass px-6 py-4 rounded-3xl shadow-lg relative max-w-sm border-2 border-anavu-green">
-              <p className="text-xs font-bold text-anavu-green leading-relaxed">{tips[tipIndex]}</p>
+            <div
+              key={tipIndex}
+              className="glass px-6 py-4 rounded-3xl shadow-lg relative max-w-sm border-2 border-anavu-green animate-scale-in"
+            >
+              <p className="text-xs sm:text-sm font-bold text-anavu-green leading-relaxed">
+                {tips[tipIndex]}
+              </p>
               <div className="w-4 h-4 bg-white border-r-2 border-b-2 border-anavu-green transform rotate-45 absolute -bottom-2 left-1/2 -translate-x-1/2"></div>
             </div>
 
             {/* Mascot Character */}
-            <button onClick={nextTip} className="w-56 h-56 rounded-full border-4 border-anavu-green overflow-hidden shadow-2xl hover:scale-105 active:scale-95 transition-all relative group cursor-pointer animate-pulse-glow">
-              <img src="/images/mascot.jpg" alt="Maracuyita - Mascota oficial de Anávu" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-anavu-yellow/0 group-hover:bg-anavu-yellow/20 transition-all rounded-full"></div>
-            </button>
-            <div className="text-center">
-              <p className="text-2xl text-anavu-green" style={{ fontFamily: 'Shrikhand, cursive' }}>Maracuyita</p>
-              <span className="text-[10px] font-extrabold text-anavu-brown uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full">Mascota Oficial</span>
+            <div className="flex flex-col items-center">
+              <button
+                onClick={nextTip}
+                className="w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-anavu-green overflow-hidden shadow-2xl hover:scale-105 active:scale-95 transition-all relative group cursor-pointer animate-pulse-glow bg-anavu-cream flex items-center justify-center"
+                title="¡Haz clic en Maracuyita para escuchar otro consejo!"
+              >
+                <img
+                  src={isTalking ? '/images/mascot-talking.webp' : '/images/mascot.jpg'}
+                  alt="Maracuyita - Mascota oficial de Anávu"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-anavu-yellow/0 group-hover:bg-anavu-yellow/15 transition-all rounded-full pointer-events-none"></div>
+
+                {isTalking && (
+                  <span className="absolute bottom-3 bg-anavu-green text-anavu-yellow font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-lg border border-anavu-yellow flex items-center gap-1.5 animate-bounce">
+                    <span>💬</span> ¡Hablando!
+                  </span>
+                )}
+              </button>
+              <div className="text-center mt-3">
+                <p className="text-2xl text-anavu-green" style={{ fontFamily: 'Shrikhand, cursive' }}>
+                  Maracuyita
+                </p>
+                <span className="text-[10px] font-extrabold text-anavu-brown uppercase tracking-widest bg-white/80 px-3 py-1 rounded-full border border-anavu-yellow/40">
+                  {isTalking ? 'Contándote un tip...' : 'Mascota Oficial • ¡Hazme clic!'}
+                </span>
+              </div>
             </div>
           </div>
 
