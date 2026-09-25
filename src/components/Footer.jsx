@@ -121,6 +121,34 @@ export default function Footer() {
                 </a>
               ))}
             </div>
+            {/* QR Code Scan Box */}
+            <div className="bg-white/10 p-3.5 rounded-2xl border border-anavu-yellow/40 flex items-center gap-3.5">
+              <a href="/images/qr-anavu-card.png" target="_blank" rel="noreferrer" title="Ver Ficha QR en alta resolución">
+                <img
+                  src="/images/qr-anavu-logo.png"
+                  alt="Código QR Oficial Anávu"
+                  className="w-20 h-20 rounded-xl bg-white p-1 border-2 border-anavu-yellow shadow shrink-0 hover:scale-105 transition-transform"
+                />
+              </a>
+              <div className="space-y-1">
+                <span className="text-[10px] text-anavu-yellow font-extrabold uppercase tracking-wider block">
+                  Código QR Oficial
+                </span>
+                <p className="text-xs text-anavu-cream/90 font-medium leading-tight">
+                  Escanea para entrar a la web desde tu celular
+                </p>
+                <div className="flex items-center gap-2 pt-0.5">
+                  <a
+                    href="/images/qr-anavu-card.png"
+                    download="QR_Anavu_Web_Oficial.png"
+                    className="inline-flex items-center gap-1 text-[11px] text-anavu-yellow font-bold hover:underline"
+                  >
+                    <i className="fa-solid fa-download text-[10px]"></i> Descargar QR
+                  </a>
+                </div>
+              </div>
+            </div>
+
             <div className="p-3 rounded-xl bg-white/5 border border-anavu-yellow/20 text-[10px] text-anavu-cream/70">
               🛡️ Registro Sanitario Digesa en trámite conforme a normativas de inocuidad alimentaria.
             </div>
