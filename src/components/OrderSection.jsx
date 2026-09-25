@@ -24,13 +24,13 @@ export default function OrderSection({ cart, updateQty, catalogItems }) {
   const totalItemsCount = Object.values(cart).reduce((a, b) => a + b, 0)
 
   const generateWhatsAppMessage = () => {
-    let msg = `¡Hola Anávu! 🍪💛 Deseo realizar un pedido de Galletas de Maracuyá & Avena:\n\n`
+    let msg = `¡Hola Anávu! Deseo realizar un pedido de Galletas de Maracuyá & Avena:\n\n`
     
     if (customerName.trim()) {
-      msg += `👤 *Cliente:* ${customerName.trim()}\n`
+      msg += `*Cliente:* ${customerName.trim()}\n`
     }
 
-    msg += `📦 *Detalle de Productos:*\n`
+    msg += `*Detalle de Productos:*\n`
     let hasItems = false
     Object.entries(cart).forEach(([id, qty]) => {
       if (qty > 0) {
@@ -46,16 +46,16 @@ export default function OrderSection({ cart, updateQty, catalogItems }) {
       return null
     }
 
-    msg += `\n📍 *Tipo de Envío:* ${shippingRates[zone].name} (S/ ${shipping.toFixed(2)})`
+    msg += `\n*Tipo de Envío:* ${shippingRates[zone].name} (S/ ${shipping.toFixed(2)})`
     if (subtotal > 80 && zone === 'lima') {
       msg += ` ¡Envío Gratis por compras mayores a S/ 80!`
     }
     
     if (notes.trim()) {
-      msg += `\n📝 *Notas / Indicaciones:* ${notes.trim()}`
+      msg += `\n*Notas / Indicaciones:* ${notes.trim()}`
     }
 
-    msg += `\n\n💰 *Total a Pagar: S/ ${total.toFixed(2)}*`
+    msg += `\n\n*TOTAL A PAGAR: S/ ${total.toFixed(2)}*`
     msg += `\n\n¿Me podrían confirmar disponibilidad y los datos de pago (Yape / Plin / BCP)? ¡Muchas gracias!`
 
     return msg

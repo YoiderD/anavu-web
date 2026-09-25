@@ -51,14 +51,14 @@ export default function Products({ onAddToCart }) {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8">
           {filtered.map((p, i) => (
             <div
               key={p.id}
-              className={`bg-white rounded-3xl border-2 border-anavu-yellow/50 p-4 sm:p-5 flex flex-col justify-between shadow-md card-hover animate-fade-in-up stagger-${(i % 4) + 1}`}
+              className={`bg-white rounded-3xl border-2 border-anavu-yellow/50 p-5 sm:p-6 flex flex-col justify-between shadow-md card-hover animate-fade-in-up stagger-${(i % 4) + 1}`}
             >
               <div className="space-y-3">
-                <div className="w-full h-48 rounded-2xl border border-anavu-yellow/30 overflow-hidden relative group bg-gradient-to-b from-white via-anavu-cream/30 to-anavu-cream/60 flex items-center justify-center p-3">
+                <div className="w-full h-52 rounded-2xl border border-anavu-yellow/30 overflow-hidden relative group bg-gradient-to-b from-white via-anavu-cream/30 to-anavu-cream/60 flex items-center justify-center p-3">
                   <img
                     src={p.img}
                     alt={p.name}
@@ -66,29 +66,29 @@ export default function Products({ onAddToCart }) {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <span className={`absolute top-2.5 right-2.5 ${p.badgeColor} text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs`}>
+                  <span className={`absolute top-2.5 right-2.5 ${p.badgeColor} text-[10px] font-bold px-2.5 py-1 rounded-full shadow-xs`}>
                     {p.badge}
                   </span>
                 </div>
-                <h3 className="text-lg text-anavu-green leading-snug" style={{ fontFamily: 'Shrikhand, cursive' }}>
+                <h3 className="text-lg sm:text-xl text-anavu-green leading-snug" style={{ fontFamily: 'Shrikhand, cursive' }}>
                   {p.name}
                 </h3>
-                <p className="text-xs text-anavu-darkgreen/70 leading-relaxed line-clamp-3">
+                <p className="text-xs text-anavu-darkgreen/75 leading-relaxed line-clamp-3">
                   {p.desc}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 mt-4 border-t border-anavu-yellow/30">
-                <div>
-                  <span className="text-[10px] text-anavu-brown font-bold block">{p.unit}</span>
-                  <span className="text-xl text-anavu-green font-bold" style={{ fontFamily: 'Shrikhand, cursive' }}>
+              <div className="flex items-center justify-between pt-4 mt-5 border-t border-anavu-yellow/30 gap-3">
+                <div className="min-w-0 flex-1">
+                  <span className="text-[11px] text-anavu-brown font-bold block truncate">{p.unit}</span>
+                  <span className="text-xl sm:text-2xl text-anavu-green font-bold whitespace-nowrap block" style={{ fontFamily: 'Shrikhand, cursive' }}>
                     S/ {p.price.toFixed(2)}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => onAddToCart(p.id)}
-                  className="bg-anavu-green text-anavu-cream px-3 py-2 rounded-xl font-extrabold text-xs hover:bg-anavu-brown hover:scale-105 active:scale-95 transition-all shadow cursor-pointer flex items-center gap-1.5"
+                  className="bg-anavu-green text-anavu-cream px-4 py-2.5 rounded-xl font-extrabold text-xs hover:bg-anavu-brown hover:scale-105 active:scale-95 transition-all shadow cursor-pointer flex items-center gap-2 shrink-0"
                 >
                   <i className="fa-solid fa-cart-plus text-anavu-yellow text-xs"></i>
                   <span>Agregar</span>
