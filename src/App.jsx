@@ -14,6 +14,7 @@ export default function App() {
   const [cart, setCart] = useState({
     caja: 1,
     galleta: 0,
+    terciario: 0,
     pallet: 0,
     merch_kit: 0,
     polo: 0,
