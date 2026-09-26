@@ -107,14 +107,17 @@ export default function Mascot() {
             <div className="flex flex-col items-center">
               <button
                 onClick={nextTip}
-                className="w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-anavu-green overflow-hidden shadow-2xl hover:scale-105 active:scale-95 transition-all relative group cursor-pointer animate-pulse-glow bg-anavu-cream flex items-center justify-center"
+                className="w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-anavu-green overflow-hidden shadow-2xl hover:scale-105 active:scale-95 transition-all relative group cursor-pointer animate-mascot-breathe bg-anavu-cream flex items-center justify-center"
                 title="¡Haz clic en Maracuyita para saltar al siguiente tip!"
               >
-                <img
-                  src="/images/mascot-talking.webp"
-                  alt="Maracuyita - Mascota oficial de Anávu"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+                <picture className="w-full h-full">
+                  <source srcSet="/images/mascot-talking.webp" type="image/webp" />
+                  <img
+                    src="/images/mascot-talking.gif"
+                    alt="Maracuyita - Mascota oficial de Anávu"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-anavu-yellow/0 group-hover:bg-anavu-yellow/15 transition-all rounded-full pointer-events-none"></div>
 
                 <span className="absolute bottom-3 bg-anavu-green text-anavu-yellow font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-lg border border-anavu-yellow flex items-center gap-1.5">
