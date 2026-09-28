@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 const tips = [
   "¡Hola! Soy Maracuyita 🌺 ¡Sabías que nuestras galletas tienen pulpa real de maracuyá maduro seleccionado a mano!",
@@ -20,12 +20,15 @@ const stickers = [
 // Bocas limpias extraídas del render original (sin frames "fantasma" del GIF)
 const MOUTHS = ['closed', 'mid', 'open', 'wide']
 
-// Forma de boca según la vocal dominante de la sílaba
+// Forma de boca según la vocal dominante de la sílaba (con algo de variación para no sonar robótico)
 const visemeFor = (syllable) => {
-  if (/[aá]/i.test(syllable)) return 'wide'
-  if (/[eéoó]/i.test(syllable)) return 'open'
-  return 'mid'
+  const shape = /[aá]/i.test(syllable) ? 'wide' : /[eéoó]/i.test(syllable) ? 'open' : 'mid'
+  if (Math.random() < 0.25) return shape === 'wide' ? 'open' : 'mid'
+  return shape
 }
+
+// Apertura de mandíbula por forma de boca
+const JAW = { closed: 0, mid: 0.4, open: 0.7, wide: 1 }
 
 const syllablesOf = (word) => word.match(/[aeiouáéíóúü]+/gi) || []
 
@@ -37,34 +40,54 @@ const wordTiming = (word) => {
   return { speak, pause }
 }
 
-function MaracuyitaAvatar({ mouth, blinking, speaking }) {
+// Posiciones en % sobre el render de 600x600
+const px = (x, y, w, h) => ({ left: `${x / 6}%`, top: `${y / 6}%`, width: `${w / 6}%`, height: `${h / 6}%` })
+
+function MaracuyitaAvatar({ mouth, blinking, speaking, arm, waveId }) {
+  const jaw = JAW[mouth]
   return (
     <div className={`absolute inset-0 mascot-body ${speaking ? 'is-speaking' : ''}`}>
-      {MOUTHS.map((m) => (
+      <div
+        className="absolute inset-0 mascot-jaw"
+        style={{ transform: `translateY(${jaw * 1.2}px) scaleY(${1 + jaw * 0.012})` }}
+      >
+        {MOUTHS.map((m) => (
+          <img
+            key={m}
+            src={`/images/maracuyita/mouth-${m}.webp`}
+            alt={m === 'closed' ? 'Maracuyita - Mascota oficial de Anávu' : ''}
+            aria-hidden={m !== 'closed'}
+            draggable="false"
+            className={`absolute inset-0 w-full h-full object-cover select-none mouth-layer ${mouth === m ? 'is-active' : ''}`}
+          />
+        ))}
+        {/* Brazo como capa propia: rota desde el hombro, por detrás del borde del cuerpo */}
         <img
-          key={m}
-          src={`/images/maracuyita/mouth-${m}.webp`}
-          alt={m === 'closed' ? 'Maracuyita - Mascota oficial de Anávu' : ''}
-          aria-hidden={m !== 'closed'}
+          key={waveId}
+          src="/images/maracuyita/arm.webp"
+          alt=""
+          aria-hidden="true"
           draggable="false"
-          className="absolute inset-0 w-full h-full object-cover select-none"
-          style={{ opacity: mouth === m ? 1 : 0 }}
+          className={`absolute select-none pointer-events-none mascot-arm arm-${arm}`}
+          style={px(434, 231, 103, 119)}
         />
-      ))}
-      <img
-        src="/images/maracuyita/blink.webp"
-        alt=""
-        aria-hidden="true"
-        draggable="false"
-        className="absolute select-none pointer-events-none"
-        style={{
-          left: '31.667%',
-          top: '35.833%',
-          width: '38.333%',
-          height: '16.667%',
-          opacity: blinking ? 1 : 0,
-        }}
-      />
+        <img
+          src="/images/maracuyita/body-edge.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+          className="absolute select-none pointer-events-none"
+          style={px(430, 200, 40, 185)}
+        />
+        <img
+          src="/images/maracuyita/blink.webp"
+          alt=""
+          aria-hidden="true"
+          draggable="false"
+          className="absolute select-none pointer-events-none z-[4]"
+          style={{ ...px(190, 215, 230, 100), opacity: blinking ? 1 : 0 }}
+        />
+      </div>
     </div>
   )
 }
@@ -76,17 +99,36 @@ export default function Mascot() {
   const [mouth, setMouth] = useState('closed')
   const [blinking, setBlinking] = useState(false)
   const [visible, setVisible] = useState(false)
+  const [waving, setWaving] = useState(false)
+  const [waveId, setWaveId] = useState(0)
   const sectionRef = useRef(null)
+  const waveTimer = useRef(null)
 
   const currentWords = tips[tipIndex].split(' ')
   const speaking = displayedWords < currentWords.length
 
+  // Saludo con la mano (se reinicia la animación con waveId)
+  const wave = useCallback(() => {
+    clearTimeout(waveTimer.current)
+    setWaveId((id) => id + 1)
+    setWaving(true)
+    waveTimer.current = setTimeout(() => setWaving(false), 1900)
+  }, [])
+
+  useEffect(() => () => clearTimeout(waveTimer.current), [])
+
   // Solo habla cuando la sección está en pantalla
   useEffect(() => {
-    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.25 })
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setVisible(entry.isIntersecting)
+        if (entry.isIntersecting) wave() // saluda al aparecer en pantalla
+      },
+      { threshold: 0.25 }
+    )
     if (sectionRef.current) io.observe(sectionRef.current)
     return () => io.disconnect()
-  }, [])
+  }, [wave])
 
   // Palabra por palabra, con la boca sincronizada por sílaba
   useEffect(() => {
@@ -106,7 +148,10 @@ export default function Mascot() {
       const step = speak / syl.length
       syl.forEach((s, i) => {
         at(i * step, () => setMouth(visemeFor(s)))
-        at(i * step + step * 0.65, () => setMouth(i === syl.length - 1 ? 'closed' : 'mid'))
+        // Entre palabras seguidas la boca no siempre cierra del todo (coarticulación)
+        const last = i === syl.length - 1
+        const rest = last && (pause > 40 || Math.random() < 0.5) ? 'closed' : 'mid'
+        at(i * step + step * 0.65, () => setMouth(rest))
       })
     } else {
       at(0, () => setMouth('closed'))
@@ -116,13 +161,14 @@ export default function Mascot() {
       at(speak + pause, () => setDisplayedWords((prev) => prev + 1))
     } else {
       // Frase completa: tiempo de lectura y siguiente tip
+      at(speak + 150, wave)
       at(speak + 3500, () => {
         setTipIndex((prev) => (prev + 1) % tips.length)
         setDisplayedWords(1)
       })
     }
     return () => timers.forEach(clearTimeout)
-  }, [displayedWords, tipIndex, visible])
+  }, [displayedWords, tipIndex, visible, wave])
 
   // Parpadeo aleatorio (a veces doble)
   useEffect(() => {
@@ -202,11 +248,21 @@ export default function Mascot() {
             {/* Mascot Character with Constant Talking & Waving Loop */}
             <div className="flex flex-col items-center">
               <button
-                onClick={nextTip}
+                onClick={() => {
+                  nextTip()
+                  wave()
+                }}
+                onMouseEnter={() => !waving && wave()}
                 className="w-56 h-56 sm:w-64 sm:h-64 rounded-full border-4 border-anavu-green overflow-hidden shadow-2xl hover:scale-[1.03] active:scale-95 transition-transform duration-300 relative group cursor-pointer bg-[#F8DF97]"
                 title="¡Haz clic en Maracuyita para saltar al siguiente tip!"
               >
-                <MaracuyitaAvatar mouth={mouth} blinking={blinking} speaking={speaking && visible} />
+                <MaracuyitaAvatar
+                  mouth={mouth}
+                  blinking={blinking}
+                  speaking={speaking && visible}
+                  arm={waving ? 'wave' : speaking && visible ? 'talk' : 'idle'}
+                  waveId={waveId}
+                />
 
                 <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-anavu-green text-anavu-yellow font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-lg border border-anavu-yellow flex items-center gap-1.5">
                   <span className={`w-1.5 h-1.5 rounded-full bg-anavu-yellow ${speaking ? 'animate-pulse' : ''}`}></span>
