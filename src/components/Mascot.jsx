@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useId } from 'react'
 
 const tips = [
   "¡Hola! Soy Maracuyita 🌺 ¡Sabías que nuestras galletas tienen pulpa real de maracuyá maduro seleccionado a mano!",
@@ -17,18 +17,13 @@ const stickers = [
   { emoji: '✨', label: 'Crocante' },
 ]
 
-// Bocas limpias extraídas del render original (sin frames "fantasma" del GIF)
-const MOUTHS = ['closed', 'mid', 'open', 'wide']
-
-// Forma de boca según la vocal dominante de la sílaba (con algo de variación para no sonar robótico)
-const visemeFor = (syllable) => {
-  const shape = /[aá]/i.test(syllable) ? 'wide' : /[eéoó]/i.test(syllable) ? 'open' : 'mid'
-  if (Math.random() < 0.25) return shape === 'wide' ? 'open' : 'mid'
-  return shape
+// Apertura de boca (0 = sonrisa cerrada, 1 = abierta) según la vocal dominante de la sílaba,
+// con algo de variación para no sonar robótico
+const openFor = (syllable) => {
+  const base = /[aá]/i.test(syllable) ? 1 : /[eéoó]/i.test(syllable) ? 0.65 : 0.38
+  return base * (0.8 + Math.random() * 0.25)
 }
-
-// Apertura de mandíbula por forma de boca
-const JAW = { closed: 0, mid: 0.4, open: 0.7, wide: 1 }
+const MOUTH_REST = 0.14 // entre sílabas de una misma palabra no cierra del todo
 
 const syllablesOf = (word) => word.match(/[aeiouáéíóúü]+/gi) || []
 
@@ -43,24 +38,139 @@ const wordTiming = (word) => {
 // Posiciones en % sobre el render de 600x600
 const px = (x, y, w, h) => ({ left: `${x / 6}%`, top: `${y / 6}%`, width: `${w / 6}%`, height: `${h / 6}%` })
 
-function MaracuyitaAvatar({ mouth, blinking, speaking, arm, waveId }) {
-  const jaw = JAW[mouth]
+// Geometría de la boca en coordenadas del render (600x600), anclada a la sonrisa original
+const SMILE_L = [256, 325]
+const SMILE_R = [362, 321]
+const MOUTH_X = 309
+
+function mouthGeometry(o) {
+  const pinch = 4 * o
+  const l = [SMILE_L[0] + pinch, SMILE_L[1] - 1.5 * o]
+  const r = [SMILE_R[0] - pinch, SMILE_R[1] - 1.5 * o]
+  const upC = 345.5 - 6 * o // labio superior: sigue la sonrisa y se aplana un poco
+  const depth = 46 * o // cuánto baja el labio inferior en el centro
+  const loC = 345.5 + depth * 1.33
+  const teethH = 7 * o
+  const up = `M${l} C${l[0] + 22},${upC} ${r[0] - 22},${upC} ${r}`
+  const lowCurve = `C${r[0] - 12},${loC} ${l[0] + 12},${loC} ${l}`
+  return {
+    up,
+    shape: `${up} ${lowCurve} Z`,
+    low: `M${r} ${lowCurve}`,
+    teeth: `${up} L${r[0]},${r[1] + teethH} C${r[0] - 22},${upC + teethH} ${l[0] + 22},${upC + teethH} ${l[0]},${l[1] + teethH} Z`,
+    teethH,
+    lowMid: 340 - 4.5 * o + depth,
+  }
+}
+
+// Boca vectorial: sigue el objetivo de apertura con suavizado (sin re-render de React por frame)
+function MaracuyitaMouth({ target, jawRef }) {
+  const id = useId().replace(/:/g, '')
+  const targetRef = useRef(target)
+  const refs = useRef({})
+  const set = (key) => (el) => {
+    refs.current[key] = el
+  }
+
+  useEffect(() => {
+    targetRef.current = target
+  }, [target])
+
+  useEffect(() => {
+    let raf
+    let last = null
+    let o = 0
+    const tick = (now) => {
+      const dt = last === null ? 16 : Math.min(64, now - last)
+      last = now
+      const t = targetRef.current
+      const tau = t > o ? 38 : 55 // abre un poco más rápido de lo que cierra
+      o += (t - o) * (1 - Math.exp(-dt / tau))
+      if (Math.abs(t - o) < 0.002) o = t
+
+      const R = refs.current
+      const open = o > 0.02
+      R.group.style.display = open ? '' : 'none'
+      if (open) {
+        const g = mouthGeometry(o)
+        R.clip.setAttribute('d', g.shape)
+        R.cavity.setAttribute('d', g.shape)
+        R.outline.setAttribute('d', g.shape)
+        R.shadow.setAttribute('d', g.low)
+        R.shine.setAttribute('d', g.low)
+        R.teeth.setAttribute('d', g.teeth)
+        R.teethShadow.setAttribute('d', g.up)
+        R.teethShadow.setAttribute('transform', `translate(0,${g.teethH + 2})`)
+        R.tongue.setAttribute('cy', g.lowMid + 2)
+        R.tongue.setAttribute('rx', 24 + 14 * o)
+        R.tongue.setAttribute('ry', 8 + 12 * o)
+        R.tongueShine.setAttribute('cy', g.lowMid - 8 * o)
+        R.tongueShine.setAttribute('rx', 10 + 6 * o)
+        R.tongueShine.setAttribute('ry', 3 + 2 * o)
+      }
+      if (jawRef.current) jawRef.current.style.setProperty('--jaw', o.toFixed(3))
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [jawRef])
+
+  const blurRegion = { filterUnits: 'userSpaceOnUse', x: 200, y: 280, width: 220, height: 160 }
+  return (
+    <svg viewBox="0 0 600 600" className="absolute inset-0 w-full h-full pointer-events-none z-[1]" aria-hidden="true">
+      <defs>
+        <linearGradient id={`cav${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#2a0604" />
+          <stop offset=".6" stopColor="#5e1510" />
+          <stop offset="1" stopColor="#7a2216" />
+        </linearGradient>
+        <radialGradient id={`tng${id}`} cx="50%" cy="25%" r="75%">
+          <stop offset="0" stopColor="#ff9aa0" />
+          <stop offset="1" stopColor="#d0505c" />
+        </radialGradient>
+        <clipPath id={`clip${id}`}>
+          <path ref={set('clip')} />
+        </clipPath>
+        <filter id={`soft${id}`} {...blurRegion}>
+          <feGaussianBlur stdDeviation="0.5" />
+        </filter>
+        <filter id={`b2${id}`} {...blurRegion}>
+          <feGaussianBlur stdDeviation="2" />
+        </filter>
+        <filter id={`b4${id}`} {...blurRegion}>
+          <feGaussianBlur stdDeviation="4" />
+        </filter>
+      </defs>
+      <g ref={set('group')} style={{ display: 'none' }}>
+        {/* Sombra suave bajo el labio inferior */}
+        <path ref={set('shadow')} transform="translate(0,5)" fill="none" stroke="#9a5410" strokeOpacity=".35" strokeWidth="7" strokeLinecap="round" filter={`url(#b4${id})`} />
+        <path ref={set('cavity')} fill={`url(#cav${id})`} />
+        <g clipPath={`url(#clip${id})`}>
+          <ellipse ref={set('tongue')} cx={MOUTH_X} fill={`url(#tng${id})`} />
+          <ellipse ref={set('tongueShine')} cx={MOUTH_X} fill="#ffc7c9" opacity=".45" filter={`url(#b2${id})`} />
+          <path ref={set('teeth')} fill="#f6eddc" />
+          <path ref={set('teethShadow')} fill="none" stroke="#2a0604" strokeOpacity=".45" strokeWidth="4" filter={`url(#b2${id})`} />
+        </g>
+        {/* Brillo del labio inferior */}
+        <path ref={set('shine')} transform="translate(0,3)" fill="none" stroke="#fff1b8" strokeOpacity=".5" strokeWidth="2" strokeLinecap="round" filter={`url(#soft${id})`} />
+        <path ref={set('outline')} fill="none" stroke="#5a1400" strokeWidth="3" strokeLinejoin="round" filter={`url(#soft${id})`} />
+      </g>
+    </svg>
+  )
+}
+
+function MaracuyitaAvatar({ mouthOpen, blinking, speaking, arm, waveId }) {
+  const jawRef = useRef(null)
   return (
     <div className={`absolute inset-0 mascot-body ${speaking ? 'is-speaking' : ''}`}>
-      <div
-        className="absolute inset-0 mascot-jaw"
-        style={{ transform: `translateY(${jaw * 1.2}px) scaleY(${1 + jaw * 0.012})` }}
-      >
-        {MOUTHS.map((m) => (
-          <img
-            key={m}
-            src={`/images/maracuyita/mouth-${m}.webp`}
-            alt={m === 'closed' ? 'Maracuyita - Mascota oficial de Anávu' : ''}
-            aria-hidden={m !== 'closed'}
-            draggable="false"
-            className={`absolute inset-0 w-full h-full object-cover select-none mouth-layer ${mouth === m ? 'is-active' : ''}`}
-          />
-        ))}
+      <div ref={jawRef} className="absolute inset-0 mascot-jaw">
+        <img
+          src="/images/maracuyita/base.webp"
+          alt="Maracuyita - Mascota oficial de Anávu"
+          draggable="false"
+          className="absolute inset-0 w-full h-full object-cover select-none"
+        />
+        <MaracuyitaMouth target={mouthOpen} jawRef={jawRef} />
         {/* Brazo como capa propia: rota desde el hombro, por detrás del borde del cuerpo */}
         <img
           key={waveId}
@@ -96,7 +206,7 @@ export default function Mascot() {
   const [tipIndex, setTipIndex] = useState(0)
   const [displayedWords, setDisplayedWords] = useState(1)
   const [collected, setCollected] = useState([])
-  const [mouth, setMouth] = useState('closed')
+  const [mouthOpen, setMouthOpen] = useState(0)
   const [blinking, setBlinking] = useState(false)
   const [visible, setVisible] = useState(false)
   const [waving, setWaving] = useState(false)
@@ -135,7 +245,7 @@ export default function Mascot() {
     const timers = []
     const at = (ms, fn) => timers.push(setTimeout(fn, ms))
     if (!visible) {
-      at(0, () => setMouth('closed'))
+      at(0, () => setMouthOpen(0))
       return () => timers.forEach(clearTimeout)
     }
 
@@ -147,14 +257,14 @@ export default function Mascot() {
     if (syl.length) {
       const step = speak / syl.length
       syl.forEach((s, i) => {
-        at(i * step, () => setMouth(visemeFor(s)))
+        at(i * step, () => setMouthOpen(openFor(s)))
         // Entre palabras seguidas la boca no siempre cierra del todo (coarticulación)
         const last = i === syl.length - 1
-        const rest = last && (pause > 40 || Math.random() < 0.5) ? 'closed' : 'mid'
-        at(i * step + step * 0.65, () => setMouth(rest))
+        const rest = last && (pause > 40 || Math.random() < 0.5) ? 0 : MOUTH_REST
+        at(i * step + step * 0.65, () => setMouthOpen(rest))
       })
     } else {
-      at(0, () => setMouth('closed'))
+      at(0, () => setMouthOpen(0))
     }
 
     if (displayedWords < words.length) {
@@ -257,7 +367,7 @@ export default function Mascot() {
                 title="¡Haz clic en Maracuyita para saltar al siguiente tip!"
               >
                 <MaracuyitaAvatar
-                  mouth={mouth}
+                  mouthOpen={mouthOpen}
                   blinking={blinking}
                   speaking={speaking && visible}
                   arm={waving ? 'wave' : speaking && visible ? 'talk' : 'idle'}
