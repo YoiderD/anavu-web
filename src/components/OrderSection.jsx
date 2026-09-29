@@ -68,7 +68,7 @@ export default function OrderSection({ cart, updateQty, catalogItems }) {
       return
     }
     const encoded = encodeURIComponent(msg)
-    window.open(`https://wa.me/51906013296?text=${encoded}`, '_blank')
+    window.open(`https://wa.me/51999999999?text=${encoded}`, '_blank')
   }
 
   const handleCopySummary = () => {

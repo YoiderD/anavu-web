@@ -96,7 +96,7 @@ export default function App() {
 
       {/* Floating WhatsApp Action Button */}
       <a
-        href="https://wa.me/51906013296?text=%C2%A1Hola%20An%C3%A1vu!%20%F0%9F%8D%AA%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20las%20galletas%20de%20maracuy%C3%A1%20y%20avena"
+        href="https://wa.me/51999999999?text=%C2%A1Hola%20An%C3%A1vu!%20%F0%9F%8D%AA%20Quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20las%20galletas%20de%20maracuy%C3%A1%20y%20avena"
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-6 left-6 z-40 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-2 border-white cursor-pointer group"

@@ -79,8 +79,8 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2.5">
                 <i className="fa-brands fa-whatsapp text-anavu-yellow mt-0.5"></i>
-                <a href="https://wa.me/51906013296" target="_blank" rel="noreferrer" className="hover:text-anavu-yellow transition-colors">
-                  Atención WhatsApp: +51 906 013 296
+                <a href="https://wa.me/51999999999" target="_blank" rel="noreferrer" className="hover:text-anavu-yellow transition-colors">
+                  Atención WhatsApp: +51 999 999 999
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
@@ -107,7 +107,7 @@ export default function Footer() {
                 { icon: 'fa-instagram', href: 'https://instagram.com' },
                 { icon: 'fa-facebook', href: 'https://facebook.com' },
                 { icon: 'fa-tiktok', href: 'https://tiktok.com' },
-                { icon: 'fa-whatsapp', href: 'https://wa.me/51906013296' },
+                { icon: 'fa-whatsapp', href: 'https://wa.me/51999999999' },
               ].map((s, i) => (
                 <a
                   key={i}
